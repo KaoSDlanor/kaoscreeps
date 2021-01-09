@@ -1,0 +1,40 @@
+{
+  "name": "kaoscreeps",
+  "version": "1.0.0",
+  "description": "Screeps AI by KaoSDlanor",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "push:main": "rollup -c --environment DEST:main",
+    "push:pserver": "rollup -c --environment DEST:pserver",
+    "push:season": "rollup -c --environment DEST:season",
+    "push:sim": "rollup -c --environment DEST:sim",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaoSDlanor/kaoscreeps.git"
+  },
+  "keywords": [
+    "screeps",
+    "AI"
+  ],
+  "author": "KaoSDlanor (KaoSDlanor@gmail.com)",
+  "bugs": {
+    "url": "https://github.com/KaoSDlanor/kaoscreeps/issues"
+  },
+  "homepage": "https://github.com/KaoSDlanor/kaoscreeps#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "@types/node": "^14.14.19",
+    "@types/screeps": "^3.2.1",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "minimist": "^1.2.5",
+    "rollup": "^2.6.1",
+    "rollup-plugin-screeps": "^1.0.0",
+    "typescript": "^4.1.3"
+  }
+}
