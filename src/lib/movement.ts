@@ -1,0 +1,1 @@
+export const getTravelTime = (currentPosition: { x : number, y : number }, targetPosition: { x : number, y : number }) => Math.max(Math.abs(targetPosition.x - currentPosition.x),Math.abs(targetPosition.y - currentPosition.y));

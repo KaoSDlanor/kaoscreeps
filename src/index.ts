@@ -1,12 +1,20 @@
-import ShardGenerator from './managers/shard';
-
-if (Memory.CreepIDCounter == null) Memory.CreepIDCounter = 1;
-
-const ShardManager = ShardGenerator(Game.shard);
+import CONSTANTS from './data/constants';
+import * as managers from './managers';
 
 console.log('Code Reload',Game.time);
 
-if (Memory.ReservedObjects  == null) Memory.ReservedObjects  = {};
-if (Memory.ReservedTimeouts == null) Memory.ReservedTimeouts = {};
+if (!Memory.initialised) {
+  managers.creepSpawn.initialise();
+  managers.resourceCollection.initialise();
+  managers.construction.initialise();
+  managers.expansion.initialise();
+  Memory.initialised = true;
+};
 
-export const loop = ShardManager.Loop();
+export const loop = () => {
+
+  Game.getObjectById("")
+  managers.resourceCollection.loop();
+  if ((Game.time % CONSTANTS.spawnInterval) === CONSTANTS.spawnOffset) managers.creepSpawn.loop();
+  managers.construction.loop();
+};

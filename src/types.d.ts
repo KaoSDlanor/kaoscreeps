@@ -1,25 +1,13 @@
-interface Memory {
-  CreepIDCounter   : number
-  ReservedObjects  : { [ K in string ] : number   },
-  ReservedTimeouts : { [ K in number ] : string[] },
-}
+import type { CreepMemoryConstructor } from 'managers/construction';
+import type { CreepMemorySpawning } from './managers/creep-spawn';
+import type { CreepMemoryHarvester, CreepMemoryCollector } from './managers/resource-collection';
 
-interface SpawnMemory {
-  ReservedObjects : { [ K in string ] : number },
-  Creeps : {
-    [ CreepName in string ] : any
-  },
-}
+declare global {
+  interface Memory {
+    initialised : true,
+  }
 
-interface RoomMemory {
-  ReservedObjects : { [ K in string ] : number },
-}
-
-interface CreepMemory {
-  ReservedObjects : { [ K in string ] : number },
-  Role            : 'Builder' | 'Collector' | 'Harvester' | 'Upgrader',
-  Spawn           : string,
-  Squad?          : string,
-
-  Operation?      : number,
+  interface CreepMemory {
+    data : CreepMemoryConstructor | CreepMemorySpawning | CreepMemoryHarvester | CreepMemoryCollector,
+  }
 }

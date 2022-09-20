@@ -1,9 +1,11 @@
-const Constants = {
-  LookupInterval : 5,
-  LookupOffset   : 0,
+const CONSTANTS = {
+  lookupInterval : 10,
+  lookupOffset   : 0,
 
-  SpawnInterval  : 5,
-  SpawnOffset    : 1,
+  spawnInterval  : 5,
+  spawnOffset    : 1,
+
+  roomSize : { x : 50, y : 50 },
 } as const;
 
-export default Constants;
+export default CONSTANTS;
