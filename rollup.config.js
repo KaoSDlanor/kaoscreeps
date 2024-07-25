@@ -4,14 +4,26 @@ const ResolvePlugin  = require('@rollup/plugin-node-resolve');
 const CommonJSPlugin = require('@rollup/plugin-commonjs');
 const ScreepsPlugin  = require('rollup-plugin-screeps');
 
-module.exports = (TargetServer) => {
-  console.log(TargetServer);
-  const Servers = require('./servers.json');
-  if (!TargetServer) {
-    console.log('No destination specified - code will be compiled but not uploaded');
-  } else if (Servers[TargetServer] == null) {
-    throw new Error('Invalid upload destination');
-  }
+const getServerConfig = (targetServer) => {
+	try {
+		if (!targetServer) {
+			throw new Error('No target server specified');
+		}
+		const servers = require('./servers.json');
+		if (!(targetServer in servers)) {
+			throw new Error('Could not find config for target server');
+		}
+		const config = servers[targetServer];
+		return config;
+	} catch(e) {
+		console.warn(e.message ?? e);
+		console.warn('Code will be compiled but not uploaded');
+		return undefined;
+	}
+}
+
+module.exports = (targetServer) => {
+	const serverConfig = getServerConfig(targetServer);
 
   return {
     input: 'temp-typescript/index.js',
@@ -24,7 +36,7 @@ module.exports = (TargetServer) => {
     plugins: [
       ResolvePlugin({ browser : true }),
       CommonJSPlugin(),
-      ScreepsPlugin({ config : Servers[TargetServer], dryRun : Servers[TargetServer] == null }),
+      ScreepsPlugin({ config : serverConfig, dryRun : serverConfig == null }),
     ],
   };
 };
