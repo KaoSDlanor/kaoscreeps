@@ -1,6 +1,6 @@
-import { getTravelTime } from 'lib/movement';
 import {v4 as uuidv4}    from 'uuid';
 import CONSTANTS         from '../data/constants';
+import { getTravelTime } from '../lib/movement';
 
 export enum StorageType {
   structure,
