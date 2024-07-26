@@ -261,6 +261,6 @@ export const loop = () => {
       uninitialiseRoom(roomInfo.roomName);
       continue;
     }
-    if ((Game.time % CONSTANTS.lookupInterval) === CONSTANTS.lookupOffset) updateRoom(roomInfo.roomName);
+    if ((Game.time % CONSTANTS.INTERVALS.READ_ROOM_INTERVAL) === CONSTANTS.INTERVALS.READ_ROOM_OFFSET) updateRoom(roomInfo.roomName);
   }
 };

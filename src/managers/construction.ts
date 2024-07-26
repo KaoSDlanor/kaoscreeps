@@ -32,12 +32,13 @@ export const initialiseRoom = (roomName: string) => {
   Memory.construction.rooms[roomName] = {
     roomName,
     constructorSpawnRequestId : requestSpawn({
-      priority    : .5,
-      position    : { x : Math.round(CONSTANTS.roomSize.x / 2), y : Math.round(CONSTANTS.roomSize.y / 2), roomName },
+			paused      : false,
+      priority    : CONSTANTS.SPAWN_PRIORITY.CONSTRUCTION,
+      position    : { x : Math.round(CONSTANTS.ROOM_SIZE.X / 2), y : Math.round(CONSTANTS.ROOM_SIZE.Y / 2), roomName },
       options     : { memory : { data : { type : 'constructor', mode : CreepConstructorMode.Collect } } },
       count       : 1,
       description : 'Constructor',
-      body        : { base : [MOVE,CARRY,WORK], module : [MOVE,CARRY,WORK], allowPartial : true, waitForEnergy : false },
+      body        : { base : [MOVE,CARRY,WORK], module : [MOVE,CARRY,WORK], allowPartial : true, waitForEnergy : true },
     }),
   };
 };
@@ -106,6 +107,5 @@ export const loop = () => {
 
     const spawnRequest = getSpawnRequest(roomInfo.constructorSpawnRequestId);
     spawnRequest.count = 2 + Math.ceil(constructionSites.length / 5);
-    spawnRequest.priority = .5 + constructors.length;
   }
 };

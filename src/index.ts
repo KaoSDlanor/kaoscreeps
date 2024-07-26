@@ -1,7 +1,6 @@
-import CONSTANTS from './data/constants';
 import * as managers from './managers';
 
-console.log('Code Reload',Game.time);
+console.log('Code reload',Game.time);
 
 if (!Memory.initialised) {
 	managers.energyStorage.initialise();
@@ -14,6 +13,6 @@ if (!Memory.initialised) {
 
 export const loop = () => {
   managers.resourceCollection.loop();
-  if ((Game.time % CONSTANTS.spawnInterval) === CONSTANTS.spawnOffset) managers.creepSpawn.loop();
+  managers.creepSpawn.loop();
   managers.construction.loop();
 };

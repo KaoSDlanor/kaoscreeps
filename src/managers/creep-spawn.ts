@@ -1,4 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
+import CONSTANTS from '../data/constants';
 import bodyCalculator from '../lib/body-calculator';
 
 export type CreepMemorySpawning = {
@@ -8,6 +9,7 @@ export type CreepMemorySpawning = {
 };
 
 export type BaseSpawnRequest = {
+	paused       : boolean,
   priority     : number,
   position     : { x : number, y : number, roomName : string },
   options      : SpawnOptions,
@@ -66,9 +68,10 @@ const removeRequest = (spawnRequest: SpawnRequest) => {
 };
 
 const processRequest = (spawn: StructureSpawn,spawnRequest: SpawnRequest) => {
+	if (spawnRequest.body.waitForEnergy && spawn.room.energyCapacityAvailable > spawn.room.energyAvailable) return ERR_NOT_ENOUGH_ENERGY;
   const body = bodyCalculator(spawn.room.energyAvailable,spawnRequest.body.base,spawnRequest.body.module,spawnRequest.body.allowPartial);
   if (body == null) return ERR_NOT_ENOUGH_ENERGY;
-  const output = spawn.spawnCreep(body,`creepSpawn:${spawnRequest.requestId}:${uuidv4()}`,{
+  const output = spawn.spawnCreep(body,`creepSpawn:${spawnRequest.requestId}:${spawnRequest.description}:${uuidv4()}`,{
     ...spawnRequest.options,
     memory : {
       data           : {
@@ -108,17 +111,23 @@ export const cancelSpawn = (spawnRequestId: number) => {
   if (spawnRequest != null) removeRequest(spawnRequest);
 }
 
+export const cleanupCreep = (creepName: string) => {
+	if (Memory.creepSpawn.queue.byCreepName[creepName] != null) {
+		const spawnRequestId = Memory.creepSpawn.queue.byCreepName[creepName];
+		const spawnRequest = getSpawnRequest(spawnRequestId);
+		const index = spawnRequest.creeps.indexOf(creepName);
+		if (index > -1) spawnRequest.creeps.splice(index,1);
+		delete Memory.creepSpawn.queue.byCreepName[creepName];
+	}
+	delete Memory.creeps[creepName];
+};
+
 export const loop = () => {
+	if ((Game.time % CONSTANTS.INTERVALS.SPAWN_INTERVAL) !== CONSTANTS.INTERVALS.SPAWN_OFFSET) return;
+
   for (const creepName of Object.keys(Memory.creeps)) {
     if (Game.creeps[creepName] == null) {
-      if (Memory.creepSpawn.queue.byCreepName[creepName] != null) {
-        const spawnRequestId = Memory.creepSpawn.queue.byCreepName[creepName];
-        const spawnRequest = getSpawnRequest(spawnRequestId);
-        const index = spawnRequest.creeps.indexOf(creepName);
-        if (index > -1) spawnRequest.creeps.splice(index,1);
-        delete Memory.creepSpawn.queue.byCreepName[creepName];
-      }
-      delete Memory.creeps[creepName];
+			cleanupCreep(creepName);
       continue;
     }
     if (Memory.creeps[creepName].data.type === 'larva') {
@@ -134,7 +143,7 @@ export const loop = () => {
 
   const openRequests = Object.values(Memory.creepSpawn.queue.byRequestId)
     .filter((spawnRequest) => (spawnRequest.spawning + spawnRequest.creeps.length) < spawnRequest.count)
-    .sort((spawnRequestA,spawnRequestB) => spawnRequestA.priority - spawnRequestB.priority);
+    .sort((spawnRequestA,spawnRequestB) => spawnRequestB.priority - spawnRequestA.priority);
 
   for (const spawn of Object.values(Game.spawns)) {
     if (spawn.spawning != null) continue;
