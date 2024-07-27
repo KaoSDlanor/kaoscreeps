@@ -1,7 +1,5 @@
 import * as managers from './managers';
 
-console.log('Code reload',Game.time);
-
 if (!Memory.initialised) {
 	managers.energyStorage.initialise();
   managers.creepSpawn.initialise();
