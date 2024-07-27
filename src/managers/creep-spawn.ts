@@ -131,7 +131,7 @@ export const loop = () => {
       continue;
     }
     if (Memory.creeps[creepName].data.type === 'larva') {
-      const creepMemory = <CreepMemorySpawning>Memory.creeps[creepName].data;
+      const creepMemory = Memory.creeps[creepName].data;
       const spawnRequestId = creepMemory.spawnRequestId;
       const spawnRequest = getSpawnRequest(spawnRequestId);
       spawnRequest.creeps.push(creepName);
