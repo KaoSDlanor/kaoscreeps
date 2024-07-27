@@ -148,7 +148,6 @@ export const loop = () => {
   for (const spawn of Object.values(Game.spawns)) {
     if (spawn.spawning != null) continue;
     if (openRequests.length === 0) {
-      console.log('Nothing to spawn');
       break;
     }
 
