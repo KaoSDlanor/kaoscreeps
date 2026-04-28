@@ -1,18 +1,18 @@
-export default (AvailableEnergy: number,BaseBody: BodyPartConstant[] = [],BodyModule: BodyPartConstant[] = [],AllowPartialModules: boolean = false): BodyPartConstant[] | undefined => {
-  const Body = [...BaseBody];
-  let CurrentCost = Body.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
-  if (CurrentCost > AvailableEnergy) return undefined;
-  const ModuleCost = BodyModule.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
-  while (BodyModule.length > 0) {
-    while (CurrentCost + ModuleCost <= AvailableEnergy) {
-      Body.push(...BodyModule);
-      CurrentCost += ModuleCost;
+export default (availableEnergy: number,baseBody: BodyPartConstant[] = [],bodyModule: BodyPartConstant[] = [],allowPartialModules: boolean = false): BodyPartConstant[] | undefined => {
+  const body = [...baseBody];
+  let currentCost = body.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
+  if (currentCost > availableEnergy) return undefined;
+  const ModuleCost = bodyModule.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
+  while (bodyModule.length > 0) {
+    while (currentCost + ModuleCost <= availableEnergy) {
+      body.push(...bodyModule);
+      currentCost += ModuleCost;
     }
-    if (AllowPartialModules) {
-      BodyModule = BodyModule.slice(0,-1);
+    if (allowPartialModules) {
+      bodyModule = bodyModule.slice(0,-1);
     } else {
       break;
     }
   }
-  return Body;
+  return body;
 };
