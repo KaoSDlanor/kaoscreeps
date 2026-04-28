@@ -38,8 +38,5 @@
     "rollup-plugin-screeps": "^1.0.0",
     "typescript": "^5.5.4"
   },
-  "dependencies": {
-    "uuid": "^8.3.2"
-  },
   "packageManager": "yarn@4.3.1"
 }

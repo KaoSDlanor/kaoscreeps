@@ -1,4 +1,3 @@
-import {v4 as uuidv4} from 'uuid';
 import CONSTANTS from '../data/constants';
 import bodyCalculator from '../lib/body-calculator';
 
@@ -71,7 +70,7 @@ const processRequest = (spawn: StructureSpawn,spawnRequest: SpawnRequest) => {
 	if (spawnRequest.body.waitForEnergy && spawn.room.energyCapacityAvailable > spawn.room.energyAvailable) return ERR_NOT_ENOUGH_ENERGY;
   const body = bodyCalculator(spawn.room.energyAvailable,spawnRequest.body.base,spawnRequest.body.module,spawnRequest.body.allowPartial);
   if (body == null) return ERR_NOT_ENOUGH_ENERGY;
-  const output = spawn.spawnCreep(body,`creepSpawn:${spawnRequest.requestId}:${spawnRequest.description}:${uuidv4()}`,{
+  const output = spawn.spawnCreep(body,`creepSpawn:${spawnRequest.requestId}:${spawnRequest.description}:${crypto.randomUUID()}`,{
     ...spawnRequest.options,
     memory : {
       data           : {

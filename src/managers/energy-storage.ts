@@ -1,4 +1,3 @@
-import {v4 as uuidv4}    from 'uuid';
 import CONSTANTS         from '../data/constants';
 import { getTravelTime } from '../lib/movement';
 
@@ -193,7 +192,7 @@ const computeDistanceMap = (pos: RoomPosition,storageInfoList: StorageInfo<Stora
 
 export const createReservation = <ST extends StorageType>(roomName: string,amount: number,storageType: ST,storeId: StoreId<ST>): string => {
   const storageReservation = <StorageReservation<ST>>{
-    reservationId : uuidv4(),
+    reservationId : crypto.randomUUID(),
     roomName,
     amount,
     type          : storageType,
