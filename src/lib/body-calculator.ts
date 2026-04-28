@@ -2,11 +2,11 @@ export default (availableEnergy: number,baseBody: BodyPartConstant[] = [],bodyMo
   const body = [...baseBody];
   let currentCost = body.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
   if (currentCost > availableEnergy) return undefined;
-  const ModuleCost = bodyModule.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
+  const moduleCost = bodyModule.map((BodyPart) => BODYPART_COST[BodyPart]).reduce((A,B) => A+B,0);
   while (bodyModule.length > 0) {
-    while (currentCost + ModuleCost <= availableEnergy) {
+    while (currentCost + moduleCost <= availableEnergy) {
       body.push(...bodyModule);
-      currentCost += ModuleCost;
+      currentCost += moduleCost;
     }
     if (allowPartialModules) {
       bodyModule = bodyModule.slice(0,-1);
